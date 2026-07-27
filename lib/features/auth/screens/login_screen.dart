@@ -17,7 +17,7 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
-  final _email = TextEditingController();
+  final _studentId = TextEditingController();
   final _password = TextEditingController();
   bool _obscure = true;
   bool _loading = false;
@@ -25,14 +25,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   void dispose() {
-    _email.dispose();
+    _studentId.dispose();
     _password.dispose();
     super.dispose();
   }
 
   Future<void> _login() async {
     final s = ref.s;
-    if (_email.text.trim().isEmpty || _password.text.isEmpty) {
+    if (_studentId.text.trim().isEmpty || _password.text.isEmpty) {
       setState(() => _error = s.enterEmailPassword);
       return;
     }
@@ -43,7 +43,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     try {
       await ref
           .read(authUserProvider.notifier)
-          .login(_email.text.trim(), _password.text);
+          .login(_studentId.text.trim(), _password.text);
       if (!mounted) return;
       context.go('/home');
     } catch (e) {
@@ -135,13 +135,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             TextField(
-                              controller: _email,
-                              keyboardType: TextInputType.emailAddress,
+                              controller: _studentId,
+                              keyboardType: TextInputType.number,
                               textInputAction: TextInputAction.next,
                               decoration: InputDecoration(
-                                labelText: '${s.email} / ${s.phone}',
+                                labelText: s.studentId,
                                 prefixIcon: Icon(
-                                  PhosphorIconsRegular.envelope,
+                                  PhosphorIconsRegular.identificationCard,
                                   color: AppColors.greenEmerald.withValues(
                                     alpha: 0.8,
                                   ),
@@ -152,6 +152,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             TextField(
                               controller: _password,
                               obscureText: _obscure,
+                              keyboardType: TextInputType.number,
                               textInputAction: TextInputAction.done,
                               onSubmitted: (_) => _login(),
                               decoration: InputDecoration(

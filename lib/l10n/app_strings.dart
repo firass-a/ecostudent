@@ -28,9 +28,9 @@ class AppStrings {
   String get login => _t('تسجيل الدخول', 'Connexion', 'Log in');
   String get signUp => _t('إنشاء حساب', 'Créer un compte', 'Sign up');
   String get signInSubtitle => _t(
-    'سجّل الدخول إلى حسابك الجامعي',
-    'Connectez-vous à votre compte campus',
-    'Sign in to your campus account',
+    'أدخل رقم تسجيلك والرقم السري',
+    'Entrez votre N° d\'inscription et code secret',
+    'Enter your student ID and secret number',
   );
   String get signUpSubtitle => _t(
     'أنشئ حسابك الطلابي',
@@ -41,20 +41,29 @@ class AppStrings {
       _t('ليس لديك حساب؟ ', 'Pas de compte ? ', "Don't have an account? ");
   String get email => _t('البريد الإلكتروني', 'E-mail', 'Email');
   String get phone => _t('الهاتف', 'Téléphone', 'Phone');
-  String get password => _t('كلمة المرور', 'Mot de passe', 'Password');
+  String get password => _t('الرقم السري', 'Code secret', 'Secret number');
   String get fullName => _t('الاسم الكامل', 'Nom complet', 'Full name');
+  String get firstName => _t('الاسم', 'Prénom', 'First name');
+  String get lastName => _t('اللقب', 'Nom', 'Surname');
+  String get studentId =>
+      _t('رقم تسجيل الطالب', 'N° d\'inscription', 'Student ID');
   String get university => _t('الجامعة', 'Université', 'University');
   String get campus => _t('الحرم الجامعي', 'Campus', 'Campus');
   String get forgotPassword =>
-      _t('نسيت كلمة المرور؟', 'Mot de passe oublié ?', 'Forgot password?');
+      _t('نسيت الرقم السري؟', 'Code secret oublié ?', 'Forgot secret number?');
   String get passwordUpdated =>
-      _t('تم تحديث كلمة المرور', 'Mot de passe mis à jour', 'Password updated');
+      _t('تم تحديث الرقم السري', 'Code secret mis à jour', 'Secret number updated');
   String get invalidOtp =>
       _t('رمز التحقق غير صالح', 'Code OTP invalide', 'Invalid OTP');
   String get enterEmailPassword => _t(
-    'يرجى إدخال البريد وكلمة المرور',
-    'Veuillez saisir e-mail et mot de passe',
-    'Please enter email and password',
+    'يرجى إدخال رقم التسجيل والرقم السري',
+    'Veuillez saisir N° d\'inscription et code secret',
+    'Please enter student ID and secret number',
+  );
+  String get enterSignUpFields => _t(
+    'يرجى إدخال الاسم واللقب ورقم التسجيل والرقم السري',
+    'Veuillez saisir prénom, nom, N° d\'inscription et code secret',
+    'Please enter name, surname, student ID and secret number',
   );
   String get referralCodeOptional => _t(
     'رمز الإحالة (اختياري)',
@@ -62,9 +71,9 @@ class AppStrings {
     'Referral code (optional)',
   );
   String get demoCredentials => _t(
-    'تجريبي: amine.benali@usthb.dz · demo1234',
-    'Démo : amine.benali@usthb.dz · demo1234',
-    'Demo: amine.benali@usthb.dz · demo1234',
+    'تجريبي: 202131049012 · 1234',
+    'Démo : 202131049012 · 1234',
+    'Demo: 202131049012 · 1234',
   );
 
   // ── Navigation ────────────────────────────────────────────────
@@ -368,6 +377,11 @@ class AppStrings {
     'Identifiants invalides',
     'Invalid credentials',
   );
+  String get studentIdTaken => _t(
+    'رقم التسجيل مستخدم مسبقاً',
+    'N° d\'inscription déjà utilisé',
+    'Student ID already registered',
+  );
   String get notLoggedIn =>
       _t('غير مسجل الدخول', 'Non connecté', 'Not logged in');
   String get insufficientPoints =>
@@ -392,6 +406,7 @@ class AppStrings {
   String localizeError(String raw) {
     final msg = raw.replaceFirst('Exception: ', '');
     if (msg == 'Invalid credentials') return invalidCredentials;
+    if (msg == 'Student ID already registered') return studentIdTaken;
     if (msg == 'Not logged in') return notLoggedIn;
     if (msg == 'Insufficient points') return insufficientPoints;
     if (msg.startsWith('Minimum withdrawal is ')) {

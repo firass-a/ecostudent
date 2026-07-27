@@ -60,25 +60,20 @@ class MockUserRepository implements UserRepository {
   }
 
   @override
-  Future<User?> login(String emailOrPhone, String password) async {
+  Future<User?> login(String studentId, String password) async {
     await _store._delay(700);
+    final id = studentId.trim();
     final match = _store.users.cast<User?>().firstWhere(
-          (u) =>
-              (u!.email.toLowerCase() == emailOrPhone.toLowerCase() ||
-                  u.phone == emailOrPhone) &&
-              u.password == password,
+          (u) => u!.studentId == id && u.password == password,
           orElse: () => null,
         );
-    // Demo shortcut: any login with demo credentials or existing user
     if (match != null) {
       _store.currentUser = match;
       return match;
     }
-    // Allow demo login with amine credentials or generic demo
-    if ((emailOrPhone.contains('amine') ||
-            emailOrPhone == '0555123456' ||
-            emailOrPhone == 'demo') &&
-        (password == 'demo1234' || password == 'password')) {
+    // Demo shortcut
+    if ((id == '202131049012' || id == 'demo') &&
+        (password == '1234' || password == 'demo1234')) {
       _store.currentUser = _store.users.first;
       return _store.currentUser;
     }
@@ -87,24 +82,31 @@ class MockUserRepository implements UserRepository {
 
   @override
   Future<User> signUp({
-    required String fullName,
-    required String email,
-    required String phone,
-    required String university,
-    required String campus,
+    required String firstName,
+    required String lastName,
+    required String studentId,
     required String password,
+    String? university,
+    String? campus,
     String? referralCode,
   }) async {
     await _store._delay(800);
+    final id = studentId.trim();
+    if (id.isEmpty || password.isEmpty) {
+      throw Exception('Invalid credentials');
+    }
+    if (_store.users.any((u) => u.studentId == id)) {
+      throw Exception('Student ID already registered');
+    }
+    final fullName = '${firstName.trim()} ${lastName.trim()}'.trim();
     final code =
-        'ECO-${fullName.split(' ').first.toUpperCase()}${DateTime.now().millisecond % 100}';
+        'ECO-${firstName.trim().toUpperCase()}${DateTime.now().millisecond % 100}';
     final user = User(
       id: _store._uuid.v4(),
       fullName: fullName,
-      email: email,
-      phone: phone,
-      university: university,
-      campus: campus,
+      studentId: id,
+      university: university ?? AppConstants.universities.first,
+      campus: campus ?? AppConstants.campuses.first,
       pointsBalance: referralCode != null && referralCode.isNotEmpty
           ? AppConstants.referralBonusPoints
           : 0,
@@ -169,9 +171,9 @@ class MockUserRepository implements UserRepository {
   }
 
   @override
-  Future<bool> requestPasswordReset(String emailOrPhone) async {
+  Future<bool> requestPasswordReset(String studentId) async {
     await _store._delay(600);
-    _store.pendingOtpEmail = emailOrPhone;
+    _store.pendingOtpEmail = studentId.trim();
     _store.otpVerified = false;
     return true;
   }
@@ -195,7 +197,7 @@ class MockUserRepository implements UserRepository {
     }
     final key = _store.pendingOtpEmail!;
     final idx = _store.users.indexWhere(
-      (u) => u.email == key || u.phone == key,
+      (u) => u.studentId == key || u.email == key || u.phone == key,
     );
     if (idx >= 0) {
       _store.users[idx] = _store.users[idx].copyWith(password: newPassword);

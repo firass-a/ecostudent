@@ -13,6 +13,7 @@ class MockDataSeeder {
     return User(
       id: demoUserId,
       fullName: 'Amine Benali',
+      studentId: '202131049012',
       email: 'amine.benali@usthb.dz',
       phone: '0555123456',
       university: 'USTHB',
@@ -22,6 +23,7 @@ class MockDataSeeder {
       totalCO2SavedKg: 42.5,
       referralCode: 'ECO-AMINE42',
       createdAt: now.subtract(const Duration(days: 75)),
+      password: '1234',
     );
   }
 

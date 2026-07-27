@@ -77,8 +77,9 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
             if (_step == 0)
               TextField(
                 controller: _contact,
+                keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                  labelText: '${s.email} / ${s.phone}',
+                  labelText: s.studentId,
                 ),
               ),
             if (_step == 1)
@@ -91,6 +92,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
               TextField(
                 controller: _password,
                 obscureText: true,
+                keyboardType: TextInputType.number,
                 decoration: InputDecoration(labelText: s.password),
               ),
             const Spacer(),

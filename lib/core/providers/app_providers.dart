@@ -61,11 +61,11 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
     state = AsyncValue.data(user);
   }
 
-  Future<void> login(String email, String password) async {
+  Future<void> login(String studentId, String password) async {
     state = const AsyncValue.loading();
     try {
       final user =
-          await _ref.read(userRepositoryProvider).login(email, password);
+          await _ref.read(userRepositoryProvider).login(studentId, password);
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool('logged_in', true);
       state = AsyncValue.data(user);
@@ -76,23 +76,23 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
   }
 
   Future<void> signUp({
-    required String fullName,
-    required String email,
-    required String phone,
-    required String university,
-    required String campus,
+    required String firstName,
+    required String lastName,
+    required String studentId,
     required String password,
+    String? university,
+    String? campus,
     String? referralCode,
   }) async {
     state = const AsyncValue.loading();
     try {
       final user = await _ref.read(userRepositoryProvider).signUp(
-            fullName: fullName,
-            email: email,
-            phone: phone,
+            firstName: firstName,
+            lastName: lastName,
+            studentId: studentId,
+            password: password,
             university: university,
             campus: campus,
-            password: password,
             referralCode: referralCode,
           );
       final prefs = await SharedPreferences.getInstance();
